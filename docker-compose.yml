@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: anna
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: shop1
+    volumes: 
+      - ./db/ddl/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/dml/load_data_scripts.sql:/docker-entrypoint-initdb.d/load_data_scripts.sql
+    
+
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "anna", "1234"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+    restart: always
