@@ -8,9 +8,11 @@ services:
       POSTGRES_USER: anna
       POSTGRES_PASSWORD: 1234
       POSTGRES_DB: shop1
+      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes: 
       - ./db/ddl/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./db/dml/load_data_scripts.sql:/docker-entrypoint-initdb.d/load_data_scripts.sql
+      - pgdata:/var/lib/postgresql/data
     
 
     healthcheck:
@@ -19,3 +21,6 @@ services:
       timeout: 30s
       retries: 5
     restart: always
+
+volumes:
+   pgdata:
